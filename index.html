@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-IOT漏洞挖掘之固件提取" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/02/16/IOT%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E4%B9%8B%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96/" class="article-date">
+  <time class="dt-published" datetime="2025-02-16T12:17:25.077Z" itemprop="datePublished">2025-02-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="IOT漏洞挖掘之固件提取"><a href="#IOT漏洞挖掘之固件提取" class="headerlink" title="IOT漏洞挖掘之固件提取"></a>IOT漏洞挖掘之固件提取</h1><p>主要参考文章：</p>
+<p><a target="_blank" rel="noopener" href="https://www.iotsec-zone.com/article/107#%E5%85%AB%E4%B8%B2%E5%8F%A3uart%E8%B0%83%E8%AF%95%E5%8F%A3%E8%8E%B7%E5%8F%96%E5%9B%BA%E4%BB%B6">设备漏洞战记之固件提取篇 - IOTsec-Zone</a></p>
+<p>[<a target="_blank" rel="noopener" href="https://bbs.kanxue.com/thread-281043.htm">原创]常见的固件加解密方式与D-Link固件解密实战分析-智能设备-看雪-安全社区|安全招聘|kanxue.com</a></p>
+<p>[记一次固件拆解COMFAST-WR613N V1](<a target="_blank" rel="noopener" href="https://www.yuque.com/jichujiliangdanwei/vwbq9e/vpgkm4tv18r4w7h8#%E3%80%8A%E8%AE%B0%E4%B8%80%E6%AC%A1%E5%9B%BA%E4%BB%B6%E6%8B%86%E8%A7%A3COMFAST-WR613N">https://www.yuque.com/jichujiliangdanwei/vwbq9e/vpgkm4tv18r4w7h8?#《记一次固件拆解COMFAST-WR613N</a> V1》)</p>
+<p><a target="_blank" rel="noopener" href="https://www.yuque.com/jichujiliangdanwei/vwbq9e/rvzcpzapqba6wwhx#%E3%80%8AIOT%E7%A1%AC%E4%BB%B6%E5%9F%BA%E7%A1%80%E3%80%8B">IOT硬件基础</a></p>
+<p>以 D-Link DIR-822-US 系列路由器 3.15B02 版本的固件网址：</p>
+<p><a target="_blank" rel="noopener" href="https://legacyfiles.us.dlink.com/DIR-822/Firmware/">https://legacyfiles.us.dlink.com/DIR-822/Firmware/</a></p>
+<p>解密D-Link DIR-822-US 系列路由器 3.15B02</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_66578482/article/details/137155282">物联网安全——D-Link DIR-822-US固件分析_d-link dir 822 漏洞-CSDN博客</a></p>
+<h3 id="知识前言："><a href="#知识前言：" class="headerlink" title="知识前言："></a>知识前言：</h3><p>在IOT漏洞挖掘过程中。我们首要进行的任务就是获取文件系统，通过对二进制文件进行进一步分析，来瞄准一些服务运行的逻辑，从而发现其中的漏洞所在。如果我们无法获取固件中的系统，漏洞挖掘就会变成黑盒测试，变得很困难。下面是常见的固件获取与解密的方法。</p>
+<p>同时要说的是在复现&#x2F;挖掘漏洞的时候，我们第一步就是环境搭建，其中首要任务就是获取漏洞版本的固件。</p>
+<h2 id="1：直接获取法"><a href="#1：直接获取法" class="headerlink" title="1：直接获取法"></a>1：直接获取法</h2><p><strong>普通升级的固件与U-boot固件：</strong></p>
+<p>“普通升级的固件”是完整的路由器系统固件，包含了完整的操作系统和文件系统——————我们要的固件</p>
+<p>“U-boot固件”是引导加载程序，类似电脑的BIOS，负责引导系统启动，通常不需要升级</p>
+<p><strong>拿到一个普通升级的固件，解压后包含如下</strong></p>
+<p><img src="https://mono7s.oss-cn-wuhan-lr.aliyuncs.com/image/202501151241081.png" alt="image-20250115092835889"></p>
+<p>从解压后的三个文件来看：</p>
+<ul>
+<li>root 文件(43.5MB)是我们的主要目标文件。这个文件包含了路由器的根文件系统，里面有系统的主要文件、配置文件、可执行文件等。这是进行漏洞分析最重要的部分。</li>
+<li>kernel 文件(4.1MB)是系统内核，负责系统的核心功能。</li>
+<li>CONTROL 文件通常包含一些元数据信息，比如版本控制信息等。</li>
+</ul>
+<p>对于漏洞分析，我们主要需要关注 root 文件，因为：</p>
+<ol>
+<li>它包含了完整的文件系统结构</li>
+<li>大多数应用层漏洞都存在于这个文件系统中</li>
+<li>从文件大小(43.5MB)来看，它明显包含了系统的主要组件</li>
+</ol>
+<h5 id="解包文件系统："><a href="#解包文件系统：" class="headerlink" title="解包文件系统："></a>解包文件系统：</h5><p>file 命令查看文件系统格式</p>
+<p><img src="https://mono7s.oss-cn-wuhan-lr.aliyuncs.com/image/202501151241393.png" alt="image-20250115094152724"></p>
+<p>发现是Squashfs的文件系统格式，可以用特定的unsquashfs工具来解析。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo unsquashfs -d ./root_extracted root</span><br></pre></td></tr></table></figure>
+
+<p>运行时，不要创建root_extracted这个目录，不然会报错。</p>
+<p><strong>Squashfs 文件系统解释</strong></p>
+<p>Squashfs 是一个专门为 Linux 设计的压缩只读文件系统。</p>
+<ol>
+<li>基本特征：</li>
+</ol>
+<ul>
+<li>只读文件系统，创建后内容不能被修改</li>
+<li>高压缩比，通常可以将文件系统压缩到原大小的 1&#x2F;3</li>
+<li>支持最大 16EB 的文件系统容量</li>
+<li>所有文件、目录、硬链接都会被压缩</li>
+</ul>
+<ol>
+<li>主要用途：</li>
+</ol>
+<ul>
+<li>嵌入式系统固件（如路由器）</li>
+<li>Live CD&#x2F;USB 系统</li>
+<li>一些 IoT 设备的系统文件</li>
+<li>用于存储空间受限的设备</li>
+</ul>
+<ol>
+<li>优势：</li>
+</ol>
+<ul>
+<li>节省存储空间</li>
+<li>减少闪存写入次数（因为是只读的）</li>
+<li>适合需要固定不变系统文件的场景</li>
+<li>读取速度快，因为数据是按块压缩的</li>
+</ul>
+<ol>
+<li>为什么路由器使用它：</li>
+</ol>
+<ul>
+<li>空间效率高：路由器闪存容量有限</li>
+<li>安全性好：系统文件不能被随意修改</li>
+<li>启动快速：压缩算法效率高</li>
+<li>可靠性强：断电不会损坏文件系统</li>
+</ul>
+<h2 id="2：固件加密类"><a href="#2：固件加密类" class="headerlink" title="2：固件加密类"></a>2：固件加密类</h2><p>介绍：厂商对固件进行了加密，在设备升级时，使用自己的方法先解密，再加载。一般通过binwalk等工具直接查看，无法查看到文件的压缩信息</p>
+<h3 id="1：怎么看固件是否被加密"><a href="#1：怎么看固件是否被加密" class="headerlink" title="1：怎么看固件是否被加密"></a>1：怎么看固件是否被加密</h3><p><strong>file命令查看：</strong></p>
+<p>对于正常的固件，可以看到CPU架构，入口点等信息。</p>
+<p><img src="https://mono7s.oss-cn-wuhan-lr.aliyuncs.com/image/202501152317518.png" alt="image-20250115094152724"></p>
+<p>对于被加密的固件<code>file</code>无法获取更多的信息</p>
+<p><img src="https://mono7s.oss-cn-wuhan-lr.aliyuncs.com/image/202501160956584.png" alt="image-20250116095600276"></p>
+<p><strong>binwalk 命令查看：</strong></p>
+<p>正常可以看到各个文件系统、压缩包、加密区域等信息，以及可识别的文件签名等。</p>
+<p><img src="https://mono7s.oss-cn-wuhan-lr.aliyuncs.com/image/202501161640772.png" alt="image-20250116095728717"></p>
+<p>对于被加密的<code>binwalk</code>无法获取更多的信息</p>
+<p><img src="https://mono7s.oss-cn-wuhan-lr.aliyuncs.com/image/202501161640780.png" alt="image-20250116095451571"></p>
+<p><strong>要说的是binwalk -E这个命令参数查看附件是否被加密的时候，很难去得到的这个图，我实验了三个固件，个人感觉结果不准确。在此不在书写了。</strong></p>
+<h3 id="2：固件解密方案"><a href="#2：固件解密方案" class="headerlink" title="2：固件解密方案"></a>2：固件解密方案</h3><p>对于下述三种方案，我们的目的是第三个加密固件，我们通过前面的固件来得到最终的加密固件的密钥。</p>
+<p>如果要更新升级到到一种新的加密的固件，需要先将新版固件解密才能进行升级，第三种方案应该是v1.0里面的解密算法是A，v1.1里面的解密算法是B，但是v1.1的固件加密是A算法进行加密的，v1.3是B算法加密。</p>
+<p><strong>1：固件方案一：</strong></p>
+<p>设备固件出厂时未加密，也不包含任何解密例程。解密例程与固件的未加密版本一起以更高版本（v1.1）一起提供，**以用于将来的加密固件更新，**随后的固件版本将被加密</p>
+<p><img src="https://mono7s.oss-cn-wuhan-lr.aliyuncs.com/image/202501161600082.webp" alt="img"></p>
+<p><strong>2、固件出厂加密，后续发布包含新版解密方案的未加密固件，最后发布新版加密版本</strong></p>
+<p>与方案一类似，厂商直接在设备固件的原始版本中进行了加密，但是厂商决定更改以后的加密算法，</p>
+<p>V1.0 (旧加密A) → V2.0 (未加密过渡版) → V3.0 (新加密B)。</p>
+<p>V1.0只有解密程序A，但V3.0使用了新的加密算法B，结果：V1.0的设备无法解密V3.0的固件，导致升级失败</p>
+<p>为了平滑的使得所有用户都能更新到最新的加密方式与加密固件。比如发布一个中间过渡版本。</p>
+<p><img src="https://mono7s.oss-cn-wuhan-lr.aliyuncs.com/image/202501161600156.webp" alt="img"></p>
+<p>在更新固件版本之前，需要先看新固件版本的发布通告，这个通告会指示用户在将固件升级到最新版本之前，需要先升级到固件的一个中间版本，而这个中间版本就是这个未加密的固件版本。通过这个中间版本的固件进行升级，最终可获取新版本加密固件的解密程序。</p>
+<p><strong>3、固件出厂加密，后续发布包含新版解密方案的加密固件，最后发布新版加密版本</strong></p>
+<p>从网上下载的设备固件在原始版本中进行了加密，厂商决定更改加密方案并发布一个带新版解密程序的中间版迭代加密固件，但是由于对初始版本的固件就进行了加密，因此很难获得解密程序。</p>
+<p><img src="https://mono7s.oss-cn-wuhan-lr.aliyuncs.com/image/202501161600151.webp" alt="img"></p>
+<p>此时，想对加密后的固件进行解密会比较困难。针对这种情况，一种思路是购买设备并使用 <code>JTAG</code>、<code>UART</code> 调试等方法进入 <code>Linux Shell</code> 或者 <code>Uboot Shell</code>，直接从设备硬件中提取固件的文件系统。然后就是对固件进行更深层次的分析，看看如何能够对加密的固件进行逆向分析，得到加密逻辑，最后破解。</p>
+<h3 id="3：解密举例"><a href="#3：解密举例" class="headerlink" title="3：解密举例"></a>3：解密举例</h3><p>以 D-Link DIR-822-US 系列路由器 3.15B02 版本的固件为例进行分析。</p>
+<p><a target="_blank" rel="noopener" href="https://legacyfiles.us.dlink.com/DIR-822/Firmware/">https://legacyfiles.us.dlink.com/DIR-822/Firmware/</a></p>
+<p>解密D-Link DIR-822-US 系列路由器 3.15B02：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_66578482/article/details/137155282">物联网安全——D-Link DIR-822-US固件分析_d-link dir 822 漏洞-CSDN博客</a></p>
+<h5 id="1：查看是否被加密"><a href="#1：查看是否被加密" class="headerlink" title="1：查看是否被加密"></a>1：查看是否被加密</h5><p><img src="https://mono7s.oss-cn-wuhan-lr.aliyuncs.com/image/202501161640234.png" alt="image-20250116164002017"></p>
+<p>发现file与binwalk根本没办法查看任何信息，判断进行了加密。</p>
+<h5 id="2：查看官方下载包的公告"><a href="#2：查看官方下载包的公告" class="headerlink" title="2：查看官方下载包的公告"></a>2：查看官方下载包的公告</h5><p>一般更新固件什么，会给文档帮助不了解的用户用以更新，或者发布一些公告。</p>
+<img src="C:/Users/LENOVO/AppData/Roaming/Typora/typora-user-images/image-20250116164315384.png" alt="image-20250116164315384" style="zoom: 80%;" />
+
+<p>比如在该PDF中他显示必须从V3.15过渡。我们就可以想到什么了。先去把过度版本下载了</p>
+<p>可以看到在binwalk是已经能分析出来他的文件格式，分区等信息。符合方案1&#x2F;2其中一个。</p>
+<p><img src="https://mono7s.oss-cn-wuhan-lr.aliyuncs.com/image/202501172107848.png" alt="image-20250116165403632"></p>
+<h5 id="3：binwalk提取过渡版本："><a href="#3：binwalk提取过渡版本：" class="headerlink" title="3：binwalk提取过渡版本："></a>3：binwalk提取过渡版本：</h5><p><img src="https://mono7s.oss-cn-wuhan-lr.aliyuncs.com/image/202501172107685.png" alt="image-20250116165749311"></p>
+<h5 id="4：寻找解密例程"><a href="#4：寻找解密例程" class="headerlink" title="4：寻找解密例程"></a>4：寻找解密例程</h5><p><strong>1：find搜索相关的文件名</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">find . -name &quot;*crypt*&quot;</span><br><span class="line">find . -name &quot;*enc*&quot;</span><br><span class="line">find . -name &quot;*dec*&quot;</span><br><span class="line">find . -name &quot;*img*&quot;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mono7s.oss-cn-wuhan-lr.aliyuncs.com/image/202501172107395.png" alt="image-20250117120555432"></p>
+<p>找到一个解密的脚本，可以看到是将</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash </span></span><br><span class="line"><span class="comment"># 从 xmldbc 获取设备镜像签名并存储在 sign 变量中</span></span><br><span class="line">sign=`xmldbc -g /runtime/device/image_sign`</span><br><span class="line"></span><br><span class="line"><span class="comment"># tpyrcrsu 4 这行看起来是一个自定义命令，可能与加密/解密相关</span></span><br><span class="line">tpyrcrsu 4</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从 /tmp/imagesign 文件读取密钥</span></span><br><span class="line">key=`<span class="built_in">cat</span> /tmp/imagesign`</span><br><span class="line"></span><br><span class="line"><span class="comment"># 对传入的所有文件进行循环处理</span></span><br><span class="line"><span class="keyword">for</span> filename <span class="keyword">in</span> <span class="string">&quot;<span class="variable">$@</span>&quot;</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    <span class="comment"># 使用 openssl 进行解密操作：</span></span><br><span class="line">    <span class="comment"># -aes-256-cbc: 使用 AES-256-CBC 加密算法</span></span><br><span class="line">    <span class="comment"># -in $filename: 输入文件</span></span><br><span class="line">    <span class="comment"># -out /var/config_.xml.gz: 输出到这个文件</span></span><br><span class="line">    <span class="comment"># -d: 表示解密操作</span></span><br><span class="line">    <span class="comment"># -k $key: 使用前面读取的密钥</span></span><br><span class="line">    openssl enc -aes-256-cbc -<span class="keyword">in</span> <span class="variable">$filename</span> -out /var/config_.xml.gz -d -k <span class="variable">$key</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 将解密成功的消息输出到控制台</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;[<span class="variable">$filename</span>] decrypt!&quot;</span> &gt; /dev/console</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>2：grep搜索相关文本</strong></p>
+<p>加密固件是由该未加密固件升级而来，所以我们可以在 <code>squashfs-root</code> 文件夹内搜索<code>update</code>、<code>firmware</code>、<code>upgrade</code>、<code>download</code>等关键的字符串</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">grep -e &#x27;update\|firmware\|upgrade\|download&#x27; -rnw ./</span><br><span class="line">//or  -E不需要转义字符</span><br><span class="line">grep -rnwE &#x27;update|firmware|upgrade|download&#x27; ./</span><br><span class="line">//只显示输出包含这些字符串的文件名</span><br><span class="line">grep -rw -e &#x27;update\|firmware\|upgrade\|download&#x27; -l ./</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>-e</code></strong>：使用正则表达式</p>
+<p><strong><code>-r</code></strong>: 递归搜索，表示递归地在子目录中查找。</p>
+<p><strong><code>-n</code></strong>: 显示行号。</p>
+<p><strong><code>-w</code></strong>: 仅匹配整词，确保匹配的是完整的单词。</p>
+<p><strong>3：使用kdiff3查看文件差异：</strong></p>
+<p><img src="https://mono7s.oss-cn-wuhan-lr.aliyuncs.com/image/202501181144589.png" alt="image-20250118110313058"></p>
+<p>我们找到该文件，大致分析一下就会发现这是一个固件下载的文件，通过对于不通发现，它使用了一个命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fwrite(&quot;a&quot;, $ShellPath, &quot;encimg -d -i &quot;.$fw_path.&quot; -s &quot;.$image_sign.&quot; &gt; /dev/console \n&quot;);</span><br></pre></td></tr></table></figure>
+
+<p>将该命令写入一个sh文件，然会执行，所以这个encimg 就是一个命令，我们使用find命令找一下。</p>
+<p><img src="https://mono7s.oss-cn-wuhan-lr.aliyuncs.com/image/202501181144019.png" alt="image-20250118114445078"></p>
+<p>相当好，这个东西在usr&#x2F;sbin目录下：普通用户可用的附加命令。</p>
+<p>提取符号发现，这就是一个解密的二进制文件。</p>
+<p><img src="C:/Users/LENOVO/AppData/Roaming/Typora/typora-user-images/image-20250118114607690.png" alt="image-20250118114607690"></p>
+<p><strong>4：运行该二进制文件</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo cp /usr/bin/qemu-mips-static ./</span><br><span class="line"></span><br><span class="line">sudo chroot . ./qemu-mips-static ./usr/sbin/encimg -d -i DIR822C1_FW315WWb02.bin -s wrgac43s_dlink.2015_dir822c1</span><br></pre></td></tr></table></figure>
+
+<p>qemu  -L 指定当前文件系统为库文件搜索的根路径去寻找对应的&#x2F;libc&#x2F;ld-xxxx(相当于chroot)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qemu-mips-static -L . ./usr/sbin/encimg -help</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mono7s.oss-cn-wuhan-lr.aliyuncs.com/image/202501171849772.png" alt="image-20250117184900874"></p>
+<p><strong>注意：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># qemu-mips 适合：</span><br><span class="line">- 在正常系统环境下运行</span><br><span class="line">- 对空间要求严格的场景</span><br><span class="line">qemu-mips -L /usr/mips-linux-gnu ./program</span><br><span class="line"></span><br><span class="line"># qemu-mips-static 适合：</span><br><span class="line">- 在chroot环境中运行</span><br><span class="line">- 在容器中运行</span><br><span class="line">- 需要完全独立运行的场景</span><br></pre></td></tr></table></figure>
+
+<p><strong>5：解密固件</strong></p>
+<p>一定要加上sudo 否则不能完整，只能解密部分（可能是权限问题）</p>
+<p><img src="https://mono7s.oss-cn-wuhan-lr.aliyuncs.com/image/202501172123821.png" alt="image-20250117212339363"></p>
+<p>解密提取固件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo qemu-mips -L . ./usr/sbin/encimg -d -i ./DIR822C1_FW315WWb02.bin  -s wrgac43s_dlink.2015_dir822c1</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mono7s.oss-cn-wuhan-lr.aliyuncs.com/image/202501172124093.png" alt="image-20250117212238925"></p>
+<h3 id="4：总结"><a href="#4：总结" class="headerlink" title="4：总结"></a>4：总结</h3><p><strong>1：目录说明：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/sbin/     # 系统启动必需的基本命令</span><br><span class="line">/bin/      # 普通用户可用的基本命令</span><br><span class="line">/usr/bin/  # 普通用户可用的附加命令</span><br><span class="line">/usr/sbin/ # 系统管理员使用的附加管理命令</span><br></pre></td></tr></table></figure>
+
+<p>在嵌入式系统中（如路由器）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/usr/sbin/ 可能包含：</span><br><span class="line">- 固件升级工具</span><br><span class="line">- 配置管理工具</span><br><span class="line">- 网络诊断工具</span><br><span class="line">- 系统监控工具</span><br><span class="line">- 设备管理程序</span><br></pre></td></tr></table></figure>
+
+<p><strong>2：qemu</strong></p>
+<p>qemu -L 是指定的库文件所在目录，即类似于chroot命令</p>
+<p><strong>3：kdiff3使用</strong></p>
+<p>查看目录树：</p>
+<p>在 kdiff3 窗口的左侧，会看到一个目录树</p>
+<p>目录树中的颜色标记很重要：</p>
+<p>绿色：表示新增的文件&#x2F;目录</p>
+<p>蓝色：表示修改过的文件&#x2F;目录</p>
+<p>红色：表示被删除的文件&#x2F;目录</p>
+<p>黑色：表示完全相同的文件&#x2F;目录</p>
+<p><strong>4：AI对话如下</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">我现在在做固件解密，我现在目标固件被加密了，但我现在有其过渡版本以及最初的固件版本，同时这连两个固件版本都没被加密，同时过渡版本里面有解密例程，我现在通过kdiff3对比我提取的这两个文件系统工具找到了一个可疑文件，我怀疑这个就是目标固件的解密文件。文件如下</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/02/16/IOT%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E4%B9%8B%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96/" data-id="cm77ldnpy0000c0885tip5cfx" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/02/">February 2025</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/02/16/IOT%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E4%B9%8B%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
